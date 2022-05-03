@@ -1,0 +1,32 @@
+{
+  "name": "avalanche-loadbot-js",
+  "version": "1.0.0",
+  "description": "Loadbot For Avalanche Network",
+  "main": "./main.ts",
+  "license": "MIT",
+  "scripts": {
+    "start": "node -r ts-node/register ./src/main.ts",
+    "build": ""
+  },
+  "dependencies": {
+    "@ethereumjs/tx": "^3.5.1",
+    "avalanche": "^3.13.3",
+    "commander": "^9.2.0",
+    "consola": "^2.15.3",
+    "date-fns": "^2.28.0",
+    "dayjs": "^1.11.1",
+    "ether": "^0.0.9",
+    "lodash": "^4.17.21",
+    "mobx": "^6.5.0",
+    "ora": "^5",
+    "threads": "^1.7.0",
+    "web3": "^1.7.3",
+    "web3-core": "^1.7.3"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.182",
+    "@types/node": "^17.0.31",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.4"
+  }
+}
