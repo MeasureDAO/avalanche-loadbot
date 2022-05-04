@@ -3,12 +3,11 @@ import { Command, Option } from 'commander';
 type LoadBotParam = {
   rpc: URL;
 
-  mode: 'c' | 'x';
+  mode: 'plain' | 'contract';
 
   amount: number;
   rate: number;
   sender: string;
-  waitTillFinalized: boolean;
   chainID: number;
 };
 export const program = new Command('avalanche-loadbot');
@@ -36,7 +35,7 @@ export function initProgram() {
       1000
     )
     .option(
-      '--chain-id',
+      '--chain-id <number>',
       'Chain ID of Avalanche',
       (val) => {
         return parseInt(val);
@@ -50,26 +49,20 @@ export function initProgram() {
       (val, prev) => {
         return parseInt(val);
       },
-      50
+      100
     )
-    .requiredOption(
+    .option(
       '--sender <address>',
       'Sender Address',
       (val) => {
         return '';
       },
       ''
-    )
-    .option(
-      '--wait-till-finalized',
-      'Wait untill all transactions finalized',
-      true
     );
-
   program.addOption(
-    new Option('--mode <c,x>', 'Mode to operation')
-      .choices(['c', 'x'])
-      .default('c')
+    new Option('--mode <plain, contract>', 'Mode to operation')
+      .choices(['plain', 'contract'])
+      .default('contract')
   );
 
   program.on('command:*', () => {
@@ -80,4 +73,3 @@ export function initProgram() {
 export const timer = process.hrtime();
 
 export const lParams = program.opts() as LoadBotParam;
-export const lp = program.opts() as LoadBotParam;
