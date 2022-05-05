@@ -84,8 +84,6 @@ export async function cChainExec() {
   consola.info('START AT:', startNonce);
 
   const runContractTx = async (contract: Contract, nonce?: number) => {
-    // Deploy Contract
-
     nonce = nonce ? startNonce + nonce : startNonce;
 
     const contractTx = await contract.methods.setGreeting('AVAX TEST TX');
@@ -131,7 +129,6 @@ export async function cChainExec() {
       )
         .then((val) => {
           pushResult(val);
-          // TODO
           runInAction(() => {
             const val = finishedCount.get() + 1;
             finishedCount.set(val);
@@ -193,7 +190,7 @@ export async function cChainExec() {
   autorun(async () => {
     if (finishedCount.get() === lParams.amount && !lastTxHash.get()) {
       waiting.stop();
-      // fetch metric
+      // get metric data
       let blkInfos = await Promise.all(
         blkNum.map(async (val) => {
           return await web3.eth.getBlock(val);
@@ -209,14 +206,9 @@ export async function cChainExec() {
             // Compare with start time, need to converted to unix timestamp
             return val - txStart.unix();
           }
-          // We have to self referrence. :(
-
-          // Compare the two block
+          // Compare two blocks diffrence
           return val - timestamps[idx - 1];
-
-          // When it ends.
         });
-        // const cmped = cmp.slice(0, -1);
         return cmp;
       };
       const blkTimestamps = blkTimestampsCmp();
@@ -273,18 +265,12 @@ ${blkInfos
       )} AVAX
     privateKey: ${recvAccount.privateKey}
 `);
-
-      // console.log('OUTPUT', blkNum, finishedCount.get());
     }
   });
 }
 
 async function deployContract(web3: Web3) {
-  const { eth, utils } = web3;
-  utils;
-  // Send avax
-  const nonce = await web3.eth.getTransactionCount(EVMAddr);
-
+  const { eth } = web3;
   const contract = new eth.Contract(abi as any);
   const tx = contract.deploy({
     data: DefaultContractByteCode,
