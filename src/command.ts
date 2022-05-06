@@ -8,7 +8,6 @@ type LoadBotParam = {
   amount: number;
   rate: number;
   sender: string;
-  // waitTillFinalized: boolean;
   chainID: number;
 };
 export const program = new Command('avalanche-loadbot');
@@ -60,12 +59,6 @@ export function initProgram() {
       },
       ''
     );
-  // .option(
-  //   '--wait-till-finalized',
-  //   'Wait untill all transactions finalized',
-  //   true
-  // );
-
   program.addOption(
     new Option('--mode <plain, contract>', 'Mode to operation')
       .choices(['plain', 'contract'])

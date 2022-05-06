@@ -79,9 +79,11 @@ export async function cChainExec() {
       runInAction(() => lastTxHash.set(val.transactionHash));
     }
   };
-  const startNonce = await web3.eth.getTransactionCount(EVMAddr);
-  // Get Latest Transaction Nonce
-  consola.info('START AT:', startNonce);
+  let startNonce: number;
+
+  const setStartNonce = async () => {
+    startNonce = await web3.eth.getTransactionCount(EVMAddr);
+  };
 
   const runContractTx = async (contract: Contract, nonce?: number) => {
     nonce = nonce ? startNonce + nonce : startNonce;
@@ -146,7 +148,6 @@ export async function cChainExec() {
   };
 
   const txStart = dayjs();
-
   const totalExecTimes = parseInt((amount / rate).toString());
   let execTimes = 0;
   const exec = async (nonce?: number) => {
@@ -163,13 +164,20 @@ export async function cChainExec() {
   const runner = setInterval(async () => {
     let nonce;
 
+    // First time setup
     if (execTimes === 0) {
       switch (mode) {
         case 'plain':
+          await setStartNonce();
+          consola.info('START AT:', startNonce);
           waiting = spin('Plain-Value Transfer');
           break;
         case 'contract':
           contract = await deployContract(web3);
+          // get start nonce after deploy contract in order to avoid duplicating.
+          await setStartNonce();
+          consola.info('START AT:', startNonce);
+
           waiting = spin('Contract Deploy Transfer');
           break;
       }
@@ -219,16 +227,13 @@ export async function cChainExec() {
         (latestBlkTimestap.valueOf() - txStart.valueOf()) /
         blkNum.length /
         1000;
-
+      // Results
       consola.success('Finished Testing C-Chain!');
       consola.info('=====[LOADBOT RUN]==========');
 
       consola.info(`[COUNT DATA]
 Transactions submitted = ${finishedCount.get()}
-Transactions failed    = ${
-        // TODO
-        failedCount
-      }
+Transactions failed    = ${failedCount}
       `);
 
       consola.info(`[TURN AROUND DATA]
@@ -246,10 +251,9 @@ Blocks required = ${blkNum.length}
 
 ${blkInfos
   .map((val, idx) => {
-    //  const picked = lodash.pick(val,["transactions","number"])
     return `Block #${val.number} = ${val.transactions.length} txns, time cost ${blkTimestamps[idx]} s`;
   })
-  // End with separate tail
+  // End with next line tail
   .join('\n')} 
       `);
 
