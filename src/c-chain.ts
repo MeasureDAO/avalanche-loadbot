@@ -79,15 +79,11 @@ export async function cChainExec() {
       runInAction(() => lastTxHash.set(val.transactionHash));
     }
   };
-  let startNonce: number;
 
-  const setStartNonce = async () => {
-    startNonce = await web3.eth.getTransactionCount(EVMAddr);
-  };
+  let startNonce: number;
 
   const runContractTx = async (contract: Contract, nonce?: number) => {
     nonce = nonce ? startNonce + nonce : startNonce;
-
     const contractTx = await contract.methods.setGreeting('AVAX TEST TX');
     for (let i = 0; i < lParams.rate; i++) {
       (
@@ -113,6 +109,7 @@ export async function cChainExec() {
           consola.error(e);
         });
     }
+    // consola.log(finishedCount.get());
   };
 
   const runValueTx = async (nonce?: number) => {
@@ -149,7 +146,27 @@ export async function cChainExec() {
 
   const txStart = dayjs();
   const totalExecTimes = parseInt((amount / rate).toString());
+  consola.log(totalExecTimes);
   let execTimes = 0;
+  const preExec = async () => {
+    switch (mode) {
+      case 'plain':
+        // await setStartNonce();
+        startNonce = await web3.eth.getTransactionCount(EVMAddr);
+        consola.info('START AT:', startNonce);
+        waiting = spin('Plain-Value Transfer');
+        break;
+      case 'contract':
+        contract = await deployContract(web3);
+        // get start nonce after deploy contract in order to avoid duplicating.
+        startNonce = await web3.eth.getTransactionCount(EVMAddr);
+        consola.info('START AT:', startNonce);
+
+        waiting = spin('Contract Deploy Transfer');
+        break;
+    }
+  };
+
   const exec = async (nonce?: number) => {
     switch (mode) {
       case 'plain':
@@ -161,38 +178,29 @@ export async function cChainExec() {
     }
   };
 
-  const runner = setInterval(async () => {
+  if (execTimes === 0) {
+    await preExec();
+  }
+  const runner = async () => {
     let nonce;
 
     // First time setup
-    if (execTimes === 0) {
-      switch (mode) {
-        case 'plain':
-          await setStartNonce();
-          consola.info('START AT:', startNonce);
-          waiting = spin('Plain-Value Transfer');
-          break;
-        case 'contract':
-          contract = await deployContract(web3);
-          // get start nonce after deploy contract in order to avoid duplicating.
-          await setStartNonce();
-          consola.info('START AT:', startNonce);
-
-          waiting = spin('Contract Deploy Transfer');
-          break;
-      }
-    }
     consola.info('SEND ROUND', execTimes);
+
     if (execTimes !== 0) {
       nonce = rate * execTimes;
     }
-    await exec(nonce);
+    consola.info('NONCE COUNT', nonce);
     execTimes++;
-
+    await exec(nonce);
     // check everytime when the execTime increment
     if (execTimes === totalExecTimes) {
-      clearInterval(runner);
+      clearInterval(run);
     }
+  };
+
+  const run = setInterval(async () => {
+    await runner();
   }, 1000);
 
   autorun(async () => {
@@ -276,6 +284,7 @@ ${blkInfos
 async function deployContract(web3: Web3) {
   const { eth } = web3;
   const contract = new eth.Contract(abi as any);
+  const nonce = await web3.eth.getTransactionCount(EVMAddr);
   const tx = contract.deploy({
     data: DefaultContractByteCode,
     arguments: ['AVAX TEST'],
@@ -283,7 +292,9 @@ async function deployContract(web3: Web3) {
   const send = await tx.send({
     gas: await tx.estimateGas(),
     from: EVMAddr,
+    nonce,
   });
+
   return send;
 }
 
