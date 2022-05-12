@@ -109,7 +109,6 @@ export async function cChainExec() {
           consola.error(e);
         });
     }
-    // consola.log(finishedCount.get());
   };
 
   const runValueTx = async (nonce?: number) => {
@@ -146,7 +145,6 @@ export async function cChainExec() {
 
   const txStart = dayjs();
   const totalExecTimes = parseInt((amount / rate).toString());
-  consola.log(totalExecTimes);
   let execTimes = 0;
   const preExec = async () => {
     switch (mode) {
@@ -180,6 +178,7 @@ export async function cChainExec() {
 
   if (execTimes === 0) {
     await preExec();
+    consola.info('\n TOTAL ROUND TIMES:', totalExecTimes);
   }
   const runner = async () => {
     let nonce;
