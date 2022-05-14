@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@ethereumjs/tx": "^3.5.1",
+    "@types/async": "^3.2.13",
+    "async": "^3.2.3",
     "avalanche": "^3.13.3",
     "commander": "^9.2.0",
     "consola": "^2.15.3",
