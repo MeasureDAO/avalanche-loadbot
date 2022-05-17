@@ -6,4 +6,4 @@ let command = init();
 let params = command.opts() as LoadBotParams;
 command.parse();
 
-await cChainExec();
+await cChainExec(params);

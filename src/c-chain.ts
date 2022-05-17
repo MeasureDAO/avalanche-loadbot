@@ -7,7 +7,7 @@ import {
 } from 'avalanche/dist/utils';
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
-import {LoadBotParams, lParams, timer as globalTimer} from './command';
+import {LoadBotParams} from './command';
 import { TransactionConfig, TransactionReceipt } from 'web3-core';
 import { EVMAPI } from 'avalanche/dist/apis/evm';
 import ora from 'ora';
@@ -33,7 +33,7 @@ export async function exec(params: LoadBotParams) {
 
   start = process.hrtime(); //todo: move it further
 
-  const { rate, amount, rpc, mode } = lParams;
+  const { rate, amount, rpc, mode } = params;
   const web3 = new Web3(rpc.toString());
 
   // Setup account for Value Transfer
@@ -58,7 +58,7 @@ export async function exec(params: LoadBotParams) {
       !blkNum.includes(val.blockNumber) && blkNum.push(val.blockNumber);
     });
     // Set last transaction
-    if (finishedCount.get() === lParams.amount) {
+    if (finishedCount.get() === params.amount) {
       runInAction(() => lastTxHash.set(val.transactionHash));
     }
   };
@@ -196,7 +196,7 @@ export async function exec(params: LoadBotParams) {
       await exec(lastExecCounts, nonce);
       return;
     }
-    await exec(lParams.rate, nonce);
+    await exec(params.rate, nonce);
   };
 
   const run = setInterval(async () => {
@@ -204,7 +204,7 @@ export async function exec(params: LoadBotParams) {
   }, 1000);
 
   autorun(async () => {
-    if (finishedCount.get() === lParams.amount && !lastTxHash.get()) {
+    if (finishedCount.get() === params.amount && !lastTxHash.get()) {
       clearTimeout(timeout);
       waiting.stop();
       // get metric data
