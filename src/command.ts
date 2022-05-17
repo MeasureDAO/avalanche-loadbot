@@ -1,6 +1,6 @@
 import { Command, Option } from 'commander';
 
-type LoadBotParam = {
+export type LoadBotParam = {
   rpc: URL;
 
   mode: 'plain' | 'contract';
@@ -10,8 +10,10 @@ type LoadBotParam = {
   sender: string;
   chainID: number;
 };
-export const program = new Command('avalanche-loadbot');
-export function initProgram() {
+
+export function init(): Command {
+  let program = new Command('avalanche-loadbot');
+
   program
     .name('avalanche-loadbot')
     .version(`avalanche-loadbot ${require('../package.json').version}`);
@@ -69,7 +71,6 @@ export function initProgram() {
     program.help();
     process.exitCode = 1;
   });
-}
-export const timer = process.hrtime();
 
-export const lParams = program.opts() as LoadBotParam;
+  return program;
+}

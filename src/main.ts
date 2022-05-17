@@ -1,18 +1,9 @@
-import { BinTools } from 'avalanche';
-import { Command } from 'commander';
-import ora from 'ora';
-import { avalanche } from './ava';
-import { cChainExec } from './c-chain';
-import { initProgram, lParams, program } from './command';
-// import { xChainExec } from './x-chain';
+import { exec as cChainExec } from './c-chain';
+import { init, LoadBotParam } from './command';
 
-initProgram();
+let command = init();
 
-program.parse();
+let params = command.opts() as LoadBotParam;
+command.parse();
 
-cChainExec();
-// case 'x': {
-//   xChainExec();
-//   break;
-//   // debugger;
-// }
+await cChainExec();
