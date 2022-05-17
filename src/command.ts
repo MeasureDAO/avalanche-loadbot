@@ -1,6 +1,6 @@
 import { Command, Option } from 'commander';
 
-export type LoadBotParam = {
+export type LoadBotParams = {
   rpc: URL;
 
   mode: 'plain' | 'contract';

@@ -1,13 +1,17 @@
-# Avalanche Loadbot
+# Avalanche LoadBot
 
-A simple loadbot for testing avalanche network.
+A simple stress testing utility for Avalanche network.
 
-## Install
+## Quick start
 
-Download the repo then `yarn`
+Clone the repo and run:
 
-Run it with `yarn start`
+```bash
+yarn
+npx tsc
+yarn start
+```
 
-## Option
+## LoadBot options
 
 See `yarn start -h` for full options.

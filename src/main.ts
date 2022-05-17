@@ -1,9 +1,9 @@
 import { exec as cChainExec } from './c-chain';
-import { init, LoadBotParam } from './command';
+import { init, LoadBotParams } from './command';
 
 let command = init();
 
-let params = command.opts() as LoadBotParam;
+let params = command.opts() as LoadBotParams;
 command.parse();
 
 await cChainExec();

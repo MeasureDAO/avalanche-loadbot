@@ -1,5 +1,6 @@
 {
   "name": "avalanche-loadbot-js",
+  "type": "module",
   "version": "1.0.0",
   "description": "Loadbot For Avalanche Network",
   "main": "./main.ts",

@@ -7,7 +7,7 @@ import {
 } from 'avalanche/dist/utils';
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
-import { lParams, timer as globalTimer } from './command';
+import {LoadBotParams, lParams, timer as globalTimer} from './command';
 import { TransactionConfig, TransactionReceipt } from 'web3-core';
 import { EVMAPI } from 'avalanche/dist/apis/evm';
 import ora from 'ora';
@@ -27,8 +27,8 @@ function spin(name: string) {
 var start;
 
 // Assuming working only with C-chain at the moment
-export async function exec() {
-  const evm = avalanche().CChain();
+export async function exec(params: LoadBotParams) {
+  const evm = avalanche(params).CChain();
   evm.keyChain().importKey(`${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`);
 
   start = process.hrtime(); //todo: move it further
