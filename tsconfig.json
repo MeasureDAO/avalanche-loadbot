@@ -1,13 +1,10 @@
 {
   "compilerOptions": {
-    "outDir": "./build",
-    "skipLibCheck": true,
-    "noEmit": true,
-    "strict": true,
-    "moduleResolution": "node",
     "esModuleInterop": true,
+    "target": "es2022",
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src/**.ts", "src/x-chain.ts"]
+  "include": ["src/**.ts", "src/x-chain.ts"],
+  "exclude": ["node_modules"]
 }
