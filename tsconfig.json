@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "esModuleInterop": true,
-    "lib": ["es2020"],
+//    "lib": ["es2020"],
     "module": "es2022",
     "preserveConstEnums": true,
     "moduleResolution": "node",
@@ -10,9 +10,8 @@
     "target": "es2022",
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-//    "types": ["node"],
-//    "outDir": "dist"
+    "types": ["node"],
+    "outDir": "dist"
   },
-  "include": ["src/**.ts", "src/x-chain.ts"],
-  "exclude": ["node_modules"]
+  "include": ["src/**.ts"]
 }

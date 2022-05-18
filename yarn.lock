@@ -632,6 +632,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/web3@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "@types/web3@npm:1.2.2"
+  dependencies:
+    web3: "*"
+  checksum: 9900fa44c1b14a5dda254b905cb6322d794c5fc44c0320967365c7b8aeebc04bcdde9cd51290a1576f551941ab1c709f96b388f115b7e38f37615b5588147661
+  languageName: node
+  linkType: hard
+
 "abbrev@npm:1":
   version: 1.1.1
   resolution: "abbrev@npm:1.1.1"
@@ -858,8 +867,10 @@ __metadata:
     "@types/async": ^3.2.13
     "@types/lodash": ^4.14.182
     "@types/node": ^17.0.31
+    "@types/web3": ^1.2.2
     async: ^3.2.3
     avalanche: ^3.14.0
+    bignumber: ^1.1.0
     commander: ^9.2.0
     consola: ^2.15.3
     date-fns: ^2.28.0
@@ -874,6 +885,8 @@ __metadata:
     typescript: ^4.6.4
     web3: ^1.7.3
     web3-core: ^1.7.3
+    web3-eth: ^1.7.3
+    web3-eth-contract: ^1.7.3
   languageName: unknown
   linkType: soft
 
@@ -975,6 +988,13 @@ __metadata:
   version: 9.0.2
   resolution: "bignumber.js@npm:9.0.2"
   checksum: 8637b71d0a99104b20413c47578953970006fec6b4df796b9dcfd9835ea9c402ea0e727eba9a5ca9f9a393c1d88b6168c5bbe0887598b708d4f8b4870ad62e1f
+  languageName: node
+  linkType: hard
+
+"bignumber@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "bignumber@npm:1.1.0"
+  checksum: 300f2c04fb8aa538b9e73e9c1f2c84abc06c5c7f2e8b10c8864ff540b6ff890c6665f1563c5a29f9f9b48ce131bebef245f32043082266bbb07fd098b60e341b
   languageName: node
   linkType: hard
 
@@ -5204,7 +5224,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web3-eth-contract@npm:1.7.3":
+"web3-eth-contract@npm:1.7.3, web3-eth-contract@npm:^1.7.3":
   version: 1.7.3
   resolution: "web3-eth-contract@npm:1.7.3"
   dependencies:
@@ -5260,7 +5280,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web3-eth@npm:1.7.3":
+"web3-eth@npm:1.7.3, web3-eth@npm:^1.7.3":
   version: 1.7.3
   resolution: "web3-eth@npm:1.7.3"
   dependencies:
@@ -5349,7 +5369,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web3@npm:^1.7.3":
+"web3@npm:*, web3@npm:^1.7.3":
   version: 1.7.3
   resolution: "web3@npm:1.7.3"
   dependencies:

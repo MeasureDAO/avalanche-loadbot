@@ -8,7 +8,7 @@ Clone the repo and run:
 
 ```bash
 yarn
-npx tsc
+yarn tsc
 yarn start
 ```
 
