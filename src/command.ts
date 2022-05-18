@@ -70,6 +70,5 @@ export function initProgram() {
     process.exitCode = 1;
   });
 }
-export const timer = process.hrtime();
 
 export const lParams = program.opts() as LoadBotParam;
