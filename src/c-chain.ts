@@ -7,7 +7,7 @@ import {
 } from 'avalanche/dist/utils';
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
-import { lParams, timer as globalTimer } from './command';
+import { lParams } from './command';
 import { TransactionConfig, TransactionReceipt } from 'web3-core';
 import { EVMAPI } from 'avalanche/dist/apis/evm';
 import ora from 'ora';
@@ -41,6 +41,9 @@ async function getFees(cchain: EVMAPI) {
 function spin(name: string) {
   return ora(`Benchmarking C-Chain ${name} Performance`).start();
 }
+
+let timer = process.hrtime();
+timer = null;
 
 // The main execution function for C-Chain
 export async function cChainExec() {
@@ -138,6 +141,11 @@ export async function cChainExec() {
     }
   };
 
+  if (timer === null) {
+      consola.info('Sending first transaction');
+      timer = process.hrtime();
+  }
+
   const txStart = dayjs();
   // TODO Count Last Exec
   const lastExecCounts = amount % rate;
@@ -184,13 +192,13 @@ export async function cChainExec() {
     // check everytime when the execTime increment
     if (execTimes === totalExecTimes) {
       // Set Timeout
-      timeout = setTimeout(() => {
-        waiting.stop();
-        consola.error(
-          'Timeout! Try to re-run the loadbot with another parameters.'
-        );
-        process.exit(1);
-      }, 60 * 1000);
+      //timeout = setTimeout(() => {
+      //  waiting.stop();
+      //  consola.error(
+      //    'Timeout! Try to re-run the loadbot with another parameters.'
+      //  );
+      //  process.exit(1);
+      //}, 60 * 1000);
 
       waiting.text = 'Finished benchmarking, waiting for results...';
 
@@ -267,8 +275,8 @@ Average transaction turn around = ${avgCost} s
 Fastest transaction turn around = ${blkTimestamps[0]} s
 Slowest transaction turn around = ${blkTimestamps[blkTimestamps.length - 1]} s
 Total loadbot execution time    = ${
-        process.hrtime(globalTimer)[0] +
-        process.hrtime(globalTimer)[1] * SEC_PRE_NS
+        process.hrtime(timer)[0] +
+        process.hrtime(timer)[1] * SEC_PRE_NS
       } s
       `);
 
